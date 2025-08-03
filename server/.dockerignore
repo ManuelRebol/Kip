@@ -1,0 +1,33 @@
+# Cache
+__pycache__/ 
+*.pyc
+*.pyo
+*.pyd
+
+# Bases de datos
+*.db
+*.sqlite3
+
+*.log
+
+# Entornos virtuales
+*.venv
+venv/
+
+requirements.dev.txt
+
+# Archivos de configuración de IDEs
+.git
+.gitignore
+.idea
+.vscode
+*.swp
+.DS_Store
+.editorconfig
+
+*.migrations/
+fixtures/
+test/
+
+README.md
+ruff.toml

@@ -7,7 +7,7 @@ from .models import Note
 from .serializers import NoteSerializer, NoteCreateSerializer, NoteUpdateSerializer
 
 class NoteListCreateView(generics.ListCreateAPIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     
     def get_serializer_class(self):
         if self.request.method == 'POST':
@@ -31,7 +31,7 @@ class NoteListCreateView(generics.ListCreateAPIView):
         return queryset
 
 class NoteDetailView(generics.RetrieveUpdateDestroyAPIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     
     def get_serializer_class(self):
         if self.request.method in ['PUT', 'PATCH']:
@@ -42,7 +42,7 @@ class NoteDetailView(generics.RetrieveUpdateDestroyAPIView):
         return Note.objects.filter(user=self.request.user)
 
 @api_view(['PATCH'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def toggle_favorite(request, pk):
     note = get_object_or_404(Note, pk=pk, user=request.user)
     note.is_favorite = not note.is_favorite
@@ -55,7 +55,7 @@ def toggle_favorite(request, pk):
     })
 
 @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def favorite_notes(request):
     notes = Note.objects.filter(user=request.user, is_favorite=True)
     serializer = NoteSerializer(notes, many=True)
