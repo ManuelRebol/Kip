@@ -1,0 +1,10 @@
+# No subir node_modules al build context
+node_modules
+# No subir carpetas generadas
+dist
+# Metadatos de Git
+.git
+.gitignore
+# Logs y temporales
+npm-debug.log*
+pnpm-debug.log*

@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 
 from decouple import config, Csv
-from dj_database_url import parse as dburl
+# from dj_database_url import parse as dburl
 
 SECRET_KEY = config('SECRET_KEY')
 
@@ -85,11 +85,15 @@ WSGI_APPLICATION = 'kip.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': config(
-        'DATABASE_URL',
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
-        cast=dburl
-    )
+    # 'default': config(
+    #     'DATABASE_URL',
+    #     default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+    #     cast=dburl
+    # )
+        'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'data' / 'db.sqlite3',  # BD en carpeta data/
+    }
 }
 
 
@@ -175,9 +179,11 @@ SIMPLE_JWT = {
 }
 
 # CORS Configuration
-CORS_ALLOWED_ORIGINS = config(
-    'CORS_ALLOWED_ORIGINS',
-    cast=Csv()
-)
+# CORS_ALLOWED_ORIGINS = config(
+#     'CORS_ALLOWED_ORIGINS',
+#     cast=Csv()
+# )
+
+CORS_ALLOWED_ORIGINS = 'http://localhost:3000','http://127.0.0.1:3000'  # Add your frontend URL here
 
 CORS_ALLOW_CREDENTIALS = True

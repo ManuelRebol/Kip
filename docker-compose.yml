@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  # Django Backend
+  backend:
+    build: ./server
+    environment:
+      - DEBUG=True
+      - ALLOWED_HOSTS=localhost,127.0.0.1,backend
+    volumes:
+      - ./server:/app
+      - sqlite_data:/app/data
+    ports:
+      - "8000:8000"
+    networks:
+      - kip-network
+
+  # React Frontend
+  frontend:
+    build: ./client
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - kip-network
+
+volumes:
+  # Persistencia del fichero SQLite
+  sqlite_data:
+
+networks:
+  kip-network:
+    driver: bridge

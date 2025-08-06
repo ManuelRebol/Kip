@@ -22,13 +22,16 @@ RUN apt-get update \
 COPY . .
 
 # Crear el directorio para archivos estáticos
-RUN mkdir -p /app/staticfiles
+RUN mkdir -p /app/data /app/staticfiles /app/static
 
 # Configurar Django para usar el directorio de archivos estáticos
 RUN python manage.py collectstatic --noinput
 
+COPY entrypoint.sh /app/
+RUN chmod +x /app/entrypoint.sh
+
 # Exponer el puerto por defecto de Django
 EXPOSE 8000
 
-# Comando por defecto para correr el servidor de desarrollo
-CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+# Usar el script de entrada para iniciar el contenedor
+ENTRYPOINT ["/app/entrypoint.sh"]
