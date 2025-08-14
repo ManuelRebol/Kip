@@ -1,36 +1,36 @@
 import type { ComponentProps } from 'react'
 import { useState } from 'react'
-import type { RegisterData } from '../../../types'
+import type { UpdateProfileData } from '../../../types'
 import { Input } from '../../ui/Input/Input'
 import { Button } from '../../ui/Button/Button'
-import Styles from './RegisterForm.module.css'
+import Styles from './EditProfileForm.module.css'
 
 type Props = ComponentProps<'form'> & {
-    onSubmit: (data: RegisterData) => void
-    onLoginClick?: () => void
+    onSubmit: (data: UpdateProfileData) => void
+    onPasswordClick?: () => void
     isLoading?: boolean
     error?: string
-    formData: RegisterData;
-    setFormData: (data: RegisterData | ((prev: RegisterData) => RegisterData)) => void
+    formData: UpdateProfileData;
+    setFormData: (data: UpdateProfileData | ((prev: UpdateProfileData) => UpdateProfileData)) => void
 }
 
-export const RegisterForm = ({
+export const EditProfileForm = ({
     onSubmit,
-    onLoginClick,
     isLoading = false,
     error,
     className,
     formData,
     setFormData,
+    onPasswordClick,
     ...rest
 }: Props) => {
 
     const [errors, setErrors] = useState<Record<string, string>>({})
 
     const handleChange =
-        (field: keyof RegisterData) =>
+        (field: keyof UpdateProfileData) =>
         (e: React.ChangeEvent<HTMLInputElement>) => {
-            setFormData((prev) => ({ ...prev, [field]: e.target.value }))
+            setFormData(({ ...formData, [field]: e.target.value }))
             if (errors[field]) {
                 setErrors((prev) => ({ ...prev, [field]: '' }))
             }
@@ -46,14 +46,7 @@ export const RegisterForm = ({
             newErrors.first_name = 'El nombre es requerido'
         if (!formData.last_name.trim())
             newErrors.last_name = 'El apellido es requerido'
-        if (!formData.password)
-            newErrors.password = 'La contraseña es requerida'
-        if (formData.password.length < 8)
-            newErrors.password =
-                'La contraseña debe tener al menos 8 caracteres'
-        if (formData.password !== formData.password_confirm) {
-            newErrors.password_confirm = 'Las contraseñas no coinciden'
-        }
+
 
         setErrors(newErrors)
         return Object.keys(newErrors).length === 0
@@ -69,10 +62,10 @@ export const RegisterForm = ({
     return (
         <form
             {...rest}
-            className={`${Styles.registerForm} ${className ?? ''}`}
+            className={`${Styles.updateProfileForm} ${className ?? ''}`}
             onSubmit={handleSubmit}
         >
-            <h2 className={Styles.formTitle}>Crear Cuenta</h2>
+            <h2 className={Styles.formTitle}>Editar Perfil</h2>
 
             <div className={Styles.formFields}>
                 <Input
@@ -117,28 +110,6 @@ export const RegisterForm = ({
                     />
                 </div>
 
-                <Input
-                    type="password"
-                    label="Contraseña"
-                    name='new_password'
-                    value={formData.password}
-                    onChange={handleChange('password')}
-                    placeholder="••••••••"
-                    error={errors.password}
-                    disabled={isLoading}
-                />
-
-                <Input
-                    type="password"
-                    label="Confirmar contraseña"
-                    name='password_confirm'
-                    value={formData.password_confirm}
-                    onChange={handleChange('password_confirm')}
-                    placeholder="••••••••"
-                    error={errors.password_confirm}
-                    disabled={isLoading}
-                />
-
                 {error && (
                     <p
                         style={{
@@ -160,20 +131,20 @@ export const RegisterForm = ({
                     disabled={isLoading}
                     loading={isLoading}
                 >
-                    Crear Cuenta
+                    Actualizar
                 </Button>
             </div>
 
-            {onLoginClick && (
+            {onPasswordClick && (
                 <div className={Styles.formFooter}>
-                    ¿Ya tienes cuenta?{' '}
+                    ¿Desea{' '}
                     <button
                         type="button"
                         className={Styles.formLink}
-                        onClick={onLoginClick}
+                        onClick={onPasswordClick}
                         disabled={isLoading}
                     >
-                        Inicia sesión aquí
+                        cambiar su contraseña?
                     </button>
                 </div>
             )}

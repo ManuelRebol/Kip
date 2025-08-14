@@ -1,5 +1,4 @@
 import type { ComponentProps } from 'react'
-import { useState } from 'react'
 import type { LoginCredentials } from '../../../types'
 import { Input } from '../../ui/Input/Input'
 import { Button } from '../../ui/Button/Button'
@@ -10,6 +9,8 @@ type Props = ComponentProps<'form'> & {
     onRegisterClick?: () => void
     isLoading?: boolean
     error?: string
+    formData: LoginCredentials;
+    setFormData: (data: LoginCredentials | ((prev: LoginCredentials) => LoginCredentials)) => void
 }
 
 export const LoginForm = ({
@@ -18,15 +19,21 @@ export const LoginForm = ({
     isLoading = false,
     error,
     className,
+    formData,
+    setFormData,
     ...rest
 }: Props) => {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-
+    
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        onSubmit({ email, password })
+        onSubmit(formData)
     }
+
+    const handleChange =
+        (field: keyof LoginCredentials) =>
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            setFormData(({ ...formData, [field]: e.target.value }))
+        }
 
     return (
         <form
@@ -39,23 +46,21 @@ export const LoginForm = ({
             <div className={Styles.formFields}>
                 <Input
                     type="email"
-                    name='current_email'
+                    name="current_email"
                     label="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={formData.email}
+                    onChange={handleChange('email')}
                     placeholder="tu@email.com"
-                    required
                     disabled={isLoading}
                 />
 
                 <Input
                     type="password"
-                    name='current_password'
+                    name="current_password"
                     label="Contraseña"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={formData.password}
+                    onChange={handleChange('password')}
                     placeholder="••••••••"
-                    required
                     disabled={isLoading}
                 />
 
@@ -77,7 +82,7 @@ export const LoginForm = ({
                     type="submit"
                     variant="primary"
                     size="large"
-                    disabled={isLoading || !email || !password}
+                    disabled={isLoading || !formData.email || !formData.password}
                     loading={isLoading}
                 >
                     Iniciar Sesión

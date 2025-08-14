@@ -4,16 +4,17 @@ import { useAuthStore } from '../../store/authStore';
 import { useNotesStore } from '../../store/notesStore';
 
 export const NotesPage = () => {
-  const { user } = useAuthStore();
-  const { createNote, updateNote, deleteNote, toggleFavorite } = useNotesStore();
+  const { user} = useAuthStore();
+  const { createNote, updateNote, deleteNote, toggleFavorite, fetchNotes } = useNotesStore();
 
   return (
-    <Layout user={user || undefined} variant="default">
+    <Layout user={user || undefined} variant="default" >
       <NotesView
         onCreateNote={createNote}
         onUpdateNote={updateNote}
         onDeleteNote={deleteNote}
         onToggleFavorite={toggleFavorite}
+        onFetchNotes={fetchNotes}
       />
     </Layout>
   );

@@ -8,14 +8,12 @@ type LayoutVariant = 'default' | 'auth' | 'full';
 type Props = ComponentProps<'div'> & {
   variant?: LayoutVariant;
   user?: User;
-  onProfileEdit?: () => void;
   children: ReactNode;
 };
 
 export const Layout = ({ 
   variant = 'default',
   user,
-  onProfileEdit,
   children,
   className, 
   ...rest 
@@ -34,7 +32,6 @@ export const Layout = ({
     <div {...rest} className={`${Styles.layout} ${className ?? ''}`}>
       <Header 
         user={user}
-        onProfileEdit={onProfileEdit}
       />
       <main className={`${Styles.main} ${variant === 'full' ? Styles.mainFull : ''}`}>
         {children}

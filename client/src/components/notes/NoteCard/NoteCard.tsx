@@ -22,7 +22,6 @@ export const NoteCard = ({
 
     const handleFavoriteClick = (e: React.MouseEvent) => {
         e.stopPropagation()
-        console.log("toggle favorite", note.id)
         onToggleFavorite(note.id)
     }
 

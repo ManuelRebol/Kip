@@ -1,5 +1,5 @@
 import { api } from './api';
-import type { LoginCredentials, RegisterData, User } from '../types';
+import type { LoginCredentials, RegisterData, UpdateProfileData, User } from '../types';
 
 export const authService = {
     async login(credentials: LoginCredentials) {
@@ -26,7 +26,7 @@ export const authService = {
         return response.data;
     },
 
-    async updateProfile(data: Partial<User>): Promise<User> {
+    async updateProfile(data: UpdateProfileData): Promise<User> {
         const response = await api.put('/accounts/profile/', data);
         return response.data;
     },

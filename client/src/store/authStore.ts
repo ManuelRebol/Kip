@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import type { User, LoginCredentials, RegisterData } from '../types'
+import type { User, LoginCredentials, RegisterData, UpdateProfileData } from '../types'
 import { authService } from '../services/authService'
 
 interface AuthState {
@@ -10,6 +10,7 @@ interface AuthState {
     register: (data: RegisterData) => Promise<void>
     logout: () => Promise<void>
     loadUser: () => Promise<void>
+    updateProfile: (data: UpdateProfileData) => Promise<void>
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -69,6 +70,15 @@ export const useAuthStore = create<AuthState>((set) => ({
             set({ user: null, isAuthenticated: false })
         } finally {
             set({ isLoading: false })
+        }
+    },
+
+    updateProfile: async (data) => {
+        try {
+            const updatedProfile = await authService.updateProfile(data)
+            set({ user: updatedProfile })
+        } catch (error) {
+            console.error('Error updating profile:', error)
         }
     },
 }))

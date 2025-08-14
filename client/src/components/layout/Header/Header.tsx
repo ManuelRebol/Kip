@@ -7,11 +7,10 @@ import { useAuthStore } from '../../../store/authStore'
 
 type Props = ComponentProps<'header'> & {
     user?: User
-    onProfileEdit?: () => void
     onLogout?: () => void
 }
 
-export const Header = ({ user, onProfileEdit, className, ...rest }: Props) => {
+export const Header = ({ user, className, ...rest }: Props) => {
     const { logout } = useAuthStore()
 
     const defaultAvatar =
@@ -40,7 +39,6 @@ export const Header = ({ user, onProfileEdit, className, ...rest }: Props) => {
                                 name={`${user.first_name} ${user.last_name}`}
                                 role={user.email}
                                 avatarUrl={defaultAvatar}
-                                onEdit={onProfileEdit || (() => {})}
                             />
                             <Button variant="ghost" onClick={handleLogout}>
                                 Cerrar Sesión

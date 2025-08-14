@@ -41,8 +41,14 @@ export interface CreateNoteData {
     content: string;
     is_favorite?: boolean;
 }
+export interface UpdateProfileData {
+    username: string;
+    email: string;
+    first_name: string;
+    last_name: string;
+}
 
-export interface UpdateNoteData extends Partial<CreateNoteData> { }
+export type UpdateNoteData = Partial<CreateNoteData>;
 
 export interface ApiResponse<T> {
     message?: string;

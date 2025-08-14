@@ -96,7 +96,7 @@ export const NotesList = ({
             <NoteCard
               key={note.id}
               note={note}
-              onClick={() => onNoteClick} //ATENCION: esta función fue modificada
+              onClick={() => onNoteClick(note)} 
               onToggleFavorite={onToggleFavorite}
             />
           ))}
