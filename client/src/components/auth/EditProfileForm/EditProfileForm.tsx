@@ -5,7 +5,7 @@ import { Input } from '../../ui/Input/Input'
 import { Button } from '../../ui/Button/Button'
 import Styles from './EditProfileForm.module.css'
 
-type Props = ComponentProps<'form'> & {
+type Props = Omit<ComponentProps<'form'>, 'onSubmit'> & {
     onSubmit: (data: UpdateProfileData) => void
     onPasswordClick?: () => void
     isLoading?: boolean

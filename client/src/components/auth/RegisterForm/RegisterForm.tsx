@@ -5,7 +5,7 @@ import { Input } from '../../ui/Input/Input'
 import { Button } from '../../ui/Button/Button'
 import Styles from './RegisterForm.module.css'
 
-type Props = ComponentProps<'form'> & {
+type Props = Omit<ComponentProps<'form'>, 'onSubmit'> & {
     onSubmit: (data: RegisterData) => void
     onLoginClick?: () => void
     isLoading?: boolean

@@ -4,7 +4,8 @@ import { Input } from '../../ui/Input/Input'
 import { Button } from '../../ui/Button/Button'
 import Styles from './LoginForm.module.css'
 
-type Props = ComponentProps<'form'> & {
+type Props = Omit<ComponentProps<'form'>, 'onSubmit'> & {
+// type Props = {
     onSubmit: (credentials: LoginCredentials) => void
     onRegisterClick?: () => void
     isLoading?: boolean
@@ -18,7 +19,7 @@ export const LoginForm = ({
     onRegisterClick,
     isLoading = false,
     error,
-    className,
+    // className,
     formData,
     setFormData,
     ...rest
@@ -38,7 +39,8 @@ export const LoginForm = ({
     return (
         <form
             {...rest}
-            className={`${Styles.loginForm} ${className ?? ''}`}
+            // className={`${Styles.loginForm} ${className ?? ''}`}
+            className={`${Styles.loginForm}`}
             onSubmit={handleSubmit}
         >
             <h2 className={Styles.formTitle}>Iniciar Sesión</h2>
