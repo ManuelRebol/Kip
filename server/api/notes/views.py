@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from .models import Note
+from django.db import models
 from .serializers import NoteSerializer, NoteCreateSerializer, NoteUpdateSerializer
 
 class NoteListCreateView(generics.ListCreateAPIView):
