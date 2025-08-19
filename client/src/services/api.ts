@@ -1,9 +1,19 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://172.191.112.19/';
+
+
+const getBaseURL = () => {
+  if (process.env.NODE_ENV === 'production') {
+    return ''; // Rutas relativas, manejadas por Nginx
+  }
+  
+  // En desarrollo local
+  return process.env.REACT_APP_API_URL || 'http://localhost:8000';
+};
 
 export const api = axios.create({
-    baseURL: API_BASE_URL,
+    baseURL: getBaseURL(),
     headers: {
         'Content-Type': 'application/json',
     },
