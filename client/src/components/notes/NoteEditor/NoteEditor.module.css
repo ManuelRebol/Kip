@@ -15,6 +15,7 @@
     padding: 1rem;
     border-bottom: 1px solid #e5e7eb;
     background-color: #f9fafb;
+    flex-shrink: 0;
 }
 
 .editorTitle {
@@ -31,10 +32,9 @@
 
 .editorContent {
     flex: 1;
-    padding: 1rem;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    overflow: hidden;
 }
 
 .titleInput {
@@ -42,13 +42,22 @@
     font-weight: 600;
     border: none;
     outline: none;
-    padding: 0.5rem 0;
+    padding: 1rem;
     background: transparent;
     color: #111827;
+    border-bottom: 1px solid #f3f4f6;
+    flex-shrink: 0;
 }
 
 .titleInput::placeholder {
     color: #9ca3af;
+}
+
+.editorBody {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .contentTextarea {
@@ -60,10 +69,24 @@
     line-height: 1.6;
     color: #374151;
     background: transparent;
+    padding: 1rem;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    overflow-y: auto;
 }
 
 .contentTextarea::placeholder {
     color: #9ca3af;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    line-height: 1.4;
+    white-space: pre-line;
+}
+
+.previewContainer {
+    flex: 1;
+    overflow-y: auto;
+    border-radius: 0;
+    border: none;
+    margin: 0;
 }
 
 .editorFooter {
@@ -75,10 +98,87 @@
     background-color: #f9fafb;
     font-size: 0.75rem;
     color: #6b7280;
+    flex-shrink: 0;
 }
 
 .favoriteToggle {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+}
+
+.favoriteToggle input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 3px;
+    border: 1px solid #d1d5db;
+    background-color: #ffffff;
+    cursor: pointer;
+}
+
+.favoriteToggle input[type="checkbox"]:checked {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+}
+
+.favoriteToggle label {
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: #374151;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .editorHeader {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .editorActions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .titleInput {
+        font-size: 1.125rem;
+        padding: 0.75rem;
+    }
+
+    .contentTextarea {
+        font-size: 0.875rem;
+        padding: 0.75rem;
+    }
+
+    .editorFooter {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .favoriteToggle {
+        width: 100%;
+    }
+}
+
+/* Scrollbar personalizado para webkit */
+.contentTextarea::-webkit-scrollbar,
+.previewContainer::-webkit-scrollbar {
+    width: 6px;
+}
+
+.contentTextarea::-webkit-scrollbar-track,
+.previewContainer::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+.contentTextarea::-webkit-scrollbar-thumb,
+.previewContainer::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+.contentTextarea::-webkit-scrollbar-thumb:hover,
+.previewContainer::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
 }
