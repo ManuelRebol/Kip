@@ -29,7 +29,8 @@ SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+# ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='', cast=Csv())
 
 
 # Application definition
@@ -179,11 +180,6 @@ SIMPLE_JWT = {
 }
 
 # CORS Configuration
-# CORS_ALLOWED_ORIGINS = config(
-#     'CORS_ALLOWED_ORIGINS',
-#     cast=Csv()
-# )
-
-CORS_ALLOWED_ORIGINS = 'http://localhost:3000','http://127.0.0.1:3000'  # Add your frontend URL here
+CORS_ALLOWED_ORIGINS=config('CORS_ALLOWED_ORIGINS', default='(no set)', cast=Csv())
 
 CORS_ALLOW_CREDENTIALS = True
