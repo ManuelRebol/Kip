@@ -204,22 +204,7 @@ export const NoteEditor = ({
                             value={content}
                             onChange={(e) => setContent(e.target.value)}
                             onKeyDown={handleKeyDown}
-                            placeholder="Escribe tu nota en Markdown aquí...
-
-**Negrita** o *cursiva*
-# Títulos
-- Listas
-[Enlaces](url)
-![Imágenes](url)
-`código`
-> Citas
-
-Fórmulas: $x^2 + y^2 = z^2$
-
-```javascript
-// Bloques de código
-console.log('Hola mundo');
-```"
+                            placeholder="Escribe tu nota en Markdown aquí..."
                             className={Styles.contentTextarea}
                             disabled={isLoading}
                         />

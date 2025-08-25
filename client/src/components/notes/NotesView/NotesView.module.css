@@ -1,6 +1,6 @@
 .notesView {
     display: grid;
-    grid-template-columns: 1fr 400px;
+    grid-template-columns: 1fr 615px;
     gap: 2rem;
     height: calc(100vh - 120px);
     overflow: hidden;
@@ -41,25 +41,3 @@
     opacity: 0.5;
 }
 
-@media (max-width: 768px) {
-    .notesView {
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr auto;
-        height: auto;
-    }
-
-    .editorPanel {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 100;
-        border-radius: 0;
-        border: none;
-    }
-
-    .editorPanelEmpty {
-        display: none;
-    }
-}
