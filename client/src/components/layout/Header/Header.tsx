@@ -1,4 +1,5 @@
 import type { ComponentProps } from 'react'
+import { Menu } from 'lucide-react'
 import type { User } from '../../../types'
 import { Button } from '../../ui/Button/Button'
 import ProfileCard from '../../ProfileCard/ProfileCard'
@@ -8,9 +9,17 @@ import { useAuthStore } from '../../../store/authStore'
 type Props = ComponentProps<'header'> & {
     user?: User
     onLogout?: () => void
+    onMenuClick?: () => void
+    showMenuButton?: boolean
 }
 
-export const Header = ({ user, className, ...rest }: Props) => {
+export const Header = ({ 
+    user, 
+    onMenuClick,
+    showMenuButton = false,
+    className, 
+    ...rest 
+}: Props) => {
     const { logout } = useAuthStore()
 
     const defaultAvatar =
@@ -27,22 +36,37 @@ export const Header = ({ user, className, ...rest }: Props) => {
     return (
         <header {...rest} className={`${Styles.header} ${className ?? ''}`}>
             <div className={Styles.headerContent}>
-                <a href="/" className={Styles.logo}>
-                    <div className={Styles.logoIcon}>K</div>
-                    <h1 className={Styles.logoText}>Kip</h1>
-                </a>
+                <div className={Styles.leftSection}>
+                    {showMenuButton && onMenuClick && (
+                        <Button
+                            variant="ghost"
+                            size="small"
+                            onClick={onMenuClick}
+                            className={Styles.menuButton}
+                            aria-label="Abrir menú"
+                        >
+                            <Menu size={20} />
+                        </Button>
+                    )}
+                    <a href="/" className={Styles.logo}>
+                        <div className={Styles.logoIcon}>K</div>
+                        <h1 className={Styles.logoText}>Kip</h1>
+                    </a>
+                </div>
 
                 <div className={Styles.headerActions}>
                     {user ? (
                         <>
-                            <ProfileCard
-                                name={`${user.first_name} ${user.last_name}`}
-                                role={user.email}
-                                avatarUrl={defaultAvatar}
-                            />
-                            <Button variant="ghost" onClick={handleLogout}>
-                                Cerrar Sesión
-                            </Button>
+                            <div className={Styles.desktopOnly}>
+                                <ProfileCard
+                                    name={`${user.first_name} ${user.last_name}`}
+                                    role={user.email}
+                                    avatarUrl={defaultAvatar}
+                                />
+                                <Button variant="ghost" onClick={handleLogout}>
+                                    Cerrar Sesión
+                                </Button>
+                            </div>
                         </>
                     ) : (
                         <Button variant="primary">Iniciar Sesión</Button>

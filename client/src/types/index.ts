@@ -41,6 +41,7 @@ export interface CreateNoteData {
     content: string;
     is_favorite?: boolean;
 }
+
 export interface UpdateProfileData {
     username: string;
     email: string;
@@ -57,4 +58,21 @@ export interface ApiResponse<T> {
     user?: User;
     tokens?: AuthTokens;
     note?: Note;
+}
+export interface MobileState {
+    isDrawerOpen: boolean;
+    isEditing: boolean;
+    selectedNote: Note | null;
+}
+
+export interface DrawerProps {
+    isOpen: boolean;
+    onClose: () => void;
+    title?: string;
+}
+
+export interface ResponsiveLayoutProps {
+    isMobile: boolean;
+    showMobileDrawer: boolean;
+    onMobileDrawerToggle: () => void;
 }

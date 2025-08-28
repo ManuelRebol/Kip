@@ -16,6 +16,19 @@
     align-items: center;
 }
 
+.leftSection {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.menuButton {
+    padding: 0.5rem !important;
+    border-radius: 6px;
+    display: none;
+    /* Oculto por defecto en desktop */
+}
+
 .logo {
     display: flex;
     align-items: center;
@@ -47,4 +60,66 @@
     display: flex;
     align-items: center;
     gap: 1rem;
+}
+
+.desktopOnly {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 1227px) {
+    .menuButton {
+        display: flex;
+        /* Mostrar en móvil */
+    }
+
+    .desktopOnly {
+        display: none;
+        /* Ocultar ProfileCard y botón de logout en móvil */
+    }
+
+    .headerContent {
+        max-width: 100%;
+        padding: 0 0.75rem;
+    }
+
+    .logoText {
+        font-size: 1.125rem;
+    }
+
+    .logoIcon {
+        width: 28px;
+        height: 28px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        padding: 0.75rem 0;
+    }
+
+    .headerContent {
+        padding: 0 0.5rem;
+    }
+
+    .leftSection {
+        gap: 0.375rem;
+    }
+
+    .logoText {
+        font-size: 1rem;
+    }
+
+    .logoIcon {
+        width: 24px;
+        height: 24px;
+        font-size: 0.875rem;
+    }
+
+    .menuButton {
+        padding: 0.375rem !important;
+    }
 }

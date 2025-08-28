@@ -9,12 +9,16 @@ type Props = ComponentProps<'div'> & {
   variant?: LayoutVariant;
   user?: User;
   children: ReactNode;
+  onMenuClick?: () => void;
+  showMenuButton?: boolean;
 };
 
 export const Layout = ({ 
   variant = 'default',
   user,
   children,
+  onMenuClick,
+  showMenuButton = false,
   className, 
   ...rest 
 }: Props) => {
@@ -32,6 +36,8 @@ export const Layout = ({
     <div {...rest} className={`${Styles.layout} ${className ?? ''}`}>
       <Header 
         user={user}
+        onMenuClick={onMenuClick}
+        showMenuButton={showMenuButton}
       />
       <main className={`${Styles.main} ${variant === 'full' ? Styles.mainFull : ''}`}>
         {children}

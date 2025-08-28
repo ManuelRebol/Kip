@@ -1,9 +1,14 @@
 .notesView {
+    height: calc(100vh - 120px);
+    overflow: hidden;
+}
+
+/* Desktop Layout */
+.desktopLayout {
     display: grid;
     grid-template-columns: 1fr 615px;
     gap: 2rem;
-    height: calc(100vh - 120px);
-    overflow: hidden;
+    height: 100%;
 }
 
 .notesPanel {
@@ -33,6 +38,7 @@
     font-size: 0.875rem;
     text-align: center;
     padding: 2rem;
+    height: 100%;
 }
 
 .emptyIcon {
@@ -41,3 +47,124 @@
     opacity: 0.5;
 }
 
+/* Mobile Layout */
+.mobileLayout {
+    display: none;
+}
+
+.mobileEditor {
+    position: fixed;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #ffffff;
+    z-index: 100;
+    overflow: hidden;
+}
+
+.mobileNoteEditor {
+    height: 100vh;
+    border-radius: 0;
+    border: none;
+}
+
+.mobileNotesContainer {
+    height: 100%;
+    overflow: hidden;
+}
+
+.mobileNotesList {
+    height: 100%;
+    overflow-y: auto;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 1227px) {
+    .desktopLayout {
+        display: none;
+    }
+
+    .mobileLayout {
+        display: block;
+        height: 100%;
+    }
+
+    .mobileEditor {
+        top: 70px;
+    }
+
+    .notesView {
+        height: calc(100vh - 65px);
+        /* Ajustar para header móvil más pequeño */
+    }
+}
+
+@media (max-width: 768px) {
+    .mobileEditor {
+        top: 70px;
+    }
+
+    .notesView {
+        height: calc(100vh - 65px);
+    }
+}
+
+@media (max-width: 480px) {
+    .mobileEditor {
+        top: 55px;
+    }
+
+    .notesView {
+        height: calc(100vh - 65px);
+    }
+}
+
+/* Scrollbar personalizado para desktop */
+.notesListContainer::-webkit-scrollbar {
+    width: 6px;
+}
+
+.notesListContainer::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+.notesListContainer::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+.notesListContainer::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Animaciones para el editor móvil */
+.mobileEditor {
+    animation: slideInFromRight 0.3s ease-out;
+}
+
+@keyframes slideInFromRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Mejoras de accesibilidad */
+.mobileEditor:focus-within {
+    outline: none;
+}
+
+/* Overlay cuando el drawer está abierto */
+.notesView.drawerOpen {
+    pointer-events: none;
+}
+
+.notesView.drawerOpen .mobileLayout {
+    filter: brightness(0.7);
+    transition: filter 0.3s ease;
+}
