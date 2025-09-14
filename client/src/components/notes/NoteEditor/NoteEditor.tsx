@@ -6,6 +6,8 @@ import { MarkdownToolbar } from '../../markdown/MarkdownToolbar/MarkdownToolbar'
 import { MarkdownPreview } from '../../markdown/MarkdownPreview/MarkdownPreview'
 import { markdownUtils } from '../../../utils/markdown'
 import Styles from './NoteEditor.module.css'
+import { Download } from 'lucide-react'
+import { download } from '../../../utils/download'
 
 type Props = ComponentProps<'div'> & {
     note?: Note
@@ -55,104 +57,125 @@ export const NoteEditor = ({
         }
     }
 
-    const handleFormat = useCallback((format: string) => {
-        const textarea = textareaRef.current
-        if (!textarea) return
+    const handleDownload = () => {
+        const noteTitle = title.trim() || 'Sin título'
+        const noteContent = content.trim() || ''
 
-        const start = textarea.selectionStart
-        const end = textarea.selectionEnd
-        const { text, newStart, newEnd } = markdownUtils.insertFormat(content, start, end, format)
+        download.downloadMarkdown(noteTitle, noteContent)
+    }
 
-        setContent(text)
+    const handleFormat = useCallback(
+        (format: string) => {
+            const textarea = textareaRef.current
+            if (!textarea) return
 
-        // Enfocar el textarea y establecer la nueva selección
-        setTimeout(() => {
-            textarea.focus()
-            textarea.setSelectionRange(newStart, newEnd)
-        }, 0)
-    }, [content])
-
-    const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        // Atajos de teclado para formato
-        if (e.ctrlKey || e.metaKey) {
-            switch (e.key) {
-                case 'b':
-                    e.preventDefault()
-                    handleFormat('bold')
-                    break
-                case 'i':
-                    e.preventDefault()
-                    handleFormat('italic')
-                    break
-                case 'k':
-                    e.preventDefault()
-                    handleFormat('link')
-                    break
-                case 'm':
-                    e.preventDefault()
-                    handleFormat('math')
-                    break
-                case '`':
-                    e.preventDefault()
-                    handleFormat('code')
-                    break
-                case '1':
-                    e.preventDefault()
-                    handleFormat('h1')
-                    break
-                case '2':
-                    e.preventDefault()
-                    handleFormat('h2')
-                    break
-                case '3':
-                    e.preventDefault()
-                    handleFormat('h3')
-                    break
-            }
-        }
-
-        if (e.ctrlKey && e.shiftKey) {
-            switch (e.key) {
-                case 'I':
-                    e.preventDefault()
-                    handleFormat('image')
-                    break
-                case '*':
-                    e.preventDefault()
-                    handleFormat('ul')
-                    break
-                case '&': // Shift+7
-                    e.preventDefault()
-                    handleFormat('ol')
-                    break
-                case '(':  // Shift+9
-                    e.preventDefault()
-                    handleFormat('quote')
-                    break
-            }
-        }
-
-        // Tab para indentación
-        if (e.key === 'Tab') {
-            e.preventDefault()
-            const textarea = e.currentTarget
             const start = textarea.selectionStart
             const end = textarea.selectionEnd
+            const { text, newStart, newEnd } = markdownUtils.insertFormat(
+                content,
+                start,
+                end,
+                format
+            )
 
-            const newContent = content.substring(0, start) + '  ' + content.substring(end)
-            setContent(newContent)
+            setContent(text)
 
+            // Enfocar el textarea y establecer la nueva selección
             setTimeout(() => {
-                textarea.setSelectionRange(start + 2, start + 2)
+                textarea.focus()
+                textarea.setSelectionRange(newStart, newEnd)
             }, 0)
-        }
-    }, [content, handleFormat])
+        },
+        [content]
+    )
+
+    const handleKeyDown = useCallback(
+        (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+            // Atajos de teclado para formato
+            if (e.ctrlKey || e.metaKey) {
+                switch (e.key) {
+                    case 'b':
+                        e.preventDefault()
+                        handleFormat('bold')
+                        break
+                    case 'i':
+                        e.preventDefault()
+                        handleFormat('italic')
+                        break
+                    case 'k':
+                        e.preventDefault()
+                        handleFormat('link')
+                        break
+                    case 'm':
+                        e.preventDefault()
+                        handleFormat('math')
+                        break
+                    case '`':
+                        e.preventDefault()
+                        handleFormat('code')
+                        break
+                    case '1':
+                        e.preventDefault()
+                        handleFormat('h1')
+                        break
+                    case '2':
+                        e.preventDefault()
+                        handleFormat('h2')
+                        break
+                    case '3':
+                        e.preventDefault()
+                        handleFormat('h3')
+                        break
+                }
+            }
+
+            if (e.ctrlKey && e.shiftKey) {
+                switch (e.key) {
+                    case 'I':
+                        e.preventDefault()
+                        handleFormat('image')
+                        break
+                    case '*':
+                        e.preventDefault()
+                        handleFormat('ul')
+                        break
+                    case '&': // Shift+7
+                        e.preventDefault()
+                        handleFormat('ol')
+                        break
+                    case '(': // Shift+9
+                        e.preventDefault()
+                        handleFormat('quote')
+                        break
+                }
+            }
+
+            // Tab para indentación
+            if (e.key === 'Tab') {
+                e.preventDefault()
+                const textarea = e.currentTarget
+                const start = textarea.selectionStart
+                const end = textarea.selectionEnd
+
+                const newContent =
+                    content.substring(0, start) + '  ' + content.substring(end)
+                setContent(newContent)
+
+                setTimeout(() => {
+                    textarea.setSelectionRange(start + 2, start + 2)
+                }, 0)
+            }
+        },
+        [content, handleFormat]
+    )
 
     const isModified = note
         ? title !== note.title ||
           content !== note.content ||
           isFavorite !== note.is_favorite
         : title.trim() !== '' || content.trim() !== ''
+
+    const hasContent = title.trim() !== '' || content.trim() !== ''
 
     return (
         <div {...rest} className={`${Styles.editor} ${className ?? ''}`}>
@@ -161,6 +184,17 @@ export const NoteEditor = ({
                     {note ? 'Editar Nota' : 'Nueva Nota'}
                 </h2>
                 <div className={Styles.editorActions}>
+                    {hasContent && (
+                        <Button
+                            variant="ghost"
+                            size="small"
+                            onClick={handleDownload}
+                            disabled={isLoading}
+                            title="Descargar como archivo Markdown (.md)"
+                        >
+                            <Download size={16} />
+                        </Button>
+                    )}
                     <Button
                         variant="ghost"
                         size="small"
@@ -209,8 +243,8 @@ export const NoteEditor = ({
                             disabled={isLoading}
                         />
                     ) : (
-                        <MarkdownPreview 
-                            markdown={content} 
+                        <MarkdownPreview
+                            markdown={content}
                             className={Styles.previewContainer}
                         />
                     )}
