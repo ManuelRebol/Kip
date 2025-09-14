@@ -11,6 +11,8 @@ import type {
 } from '../../../types'
 import Styles from './AuthModal.module.css'
 import { EditProfileForm } from '../EditProfileForm/EditProfileForm'
+import { toast } from 'react-toastify'
+import { parseApiError } from '../../../utils/errors'
 
 type Props = ComponentProps<'div'> & {
     isOpen: boolean
@@ -28,7 +30,8 @@ export const AuthModal = ({
     const [mode, setMode] = useState<
         'login' | 'register' | 'profile' | 'password'
     >(initialMode)
-    const { login, register, updateProfile, isLoading, user, loadUser } = useAuthStore()
+    const { login, register, updateProfile, isLoading, user, loadUser } =
+        useAuthStore()
     const [error, setError] = useState<string>('')
 
     const [formData, setFormData] = useState({
@@ -64,13 +67,20 @@ export const AuthModal = ({
     const handleLogin = async (credentials: LoginCredentials) => {
         try {
             setError('')
-            await login(credentials)
+            await login(credentials) // tu store debe lanzar el error
+            toast.success('Inicio de sesión exitoso') // opcional
             onClose()
-        } catch {
-            setError('Error al iniciar sesión. Verifica tus credenciales.')
+        } catch (err: any) {
+            const msg = parseApiError(err)
+            setError(msg) // opcional: muestra debajo del form
+            toast.error(msg, {
+                position: 'top-right',
+                autoClose: 6000,
+                pauseOnHover: true,
+            })
+            // NO cerrar el modal
         }
     }
-
     const handleRegister = async (data: RegisterData) => {
         try {
             setError('')
@@ -85,7 +95,7 @@ export const AuthModal = ({
         try {
             setError('')
             await updateProfile(data)
-            await loadUser() 
+            await loadUser()
             onClose()
         } catch {
             setError('Error al actualizar el perfil. Intenta nuevamente.')

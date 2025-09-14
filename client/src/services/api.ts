@@ -27,6 +27,7 @@ api.interceptors.response.use(
     async (error) => {
         const originalRequest = error.config;
 
+        // Si el token está vencido y no se ha intentado refrescar aún
         if (error.response?.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
 
@@ -47,6 +48,13 @@ api.interceptors.response.use(
                 localStorage.removeItem('refresh_token');
                 window.location.href = '/';
             }
+        }
+
+        // Si la respuesta es 401 y ya se intentó refrescar, borra los tokens
+        if (error.response?.status === 401) {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            window.location.href = '/';
         }
 
         return Promise.reject(error);

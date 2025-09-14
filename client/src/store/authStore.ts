@@ -1,11 +1,17 @@
 import { create } from 'zustand'
-import type { User, LoginCredentials, RegisterData, UpdateProfileData } from '../types'
+import type {
+    User,
+    LoginCredentials,
+    RegisterData,
+    UpdateProfileData,
+} from '../types'
 import { authService } from '../services/authService'
 
 interface AuthState {
     user: User | null
     isAuthenticated: boolean
     isLoading: boolean
+    
     login: (credentials: LoginCredentials) => Promise<void>
     register: (data: RegisterData) => Promise<void>
     logout: () => Promise<void>
@@ -17,16 +23,20 @@ export const useAuthStore = create<AuthState>((set) => ({
     user: null,
     isAuthenticated: false,
     isLoading: false,
+    
 
     login: async (credentials) => {
         set({ isLoading: true })
         try {
             const response = await authService.login(credentials)
+            console.log('Login response:', response)
             localStorage.setItem('access_token', response.tokens.access)
             localStorage.setItem('refresh_token', response.tokens.refresh)
             set({ user: response.user, isAuthenticated: true })
+            return response
         } catch (error) {
             console.error('Login failed:', error)
+            throw error 
         } finally {
             set({ isLoading: false })
         }
