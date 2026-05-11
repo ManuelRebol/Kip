@@ -31,19 +31,20 @@ jobs:
         with:
           node-version: 20
           cache: 'pnpm'
+          cache-dependency-path: client/pnpm-lock.yaml
 
       - name: Install dependencies
-        working-directory: ./Kip/client
+        working-directory: ./client
         run: pnpm install --frozen-lockfile
 
       - name: Build
-        working-directory: ./Kip/client
+        working-directory: ./client
         run: pnpm build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./Kip/client/dist
+          path: ./client/dist
 
   deploy:
     needs: build
